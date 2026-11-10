@@ -36,12 +36,12 @@ class AuthUseCasesTest {
 
         override suspend fun signIn(request: SignInRequest): AuthResult<AuthSession> {
             signInCalled = true
-            return AuthResult.Success(AuthSession("token", 10L))
+            return AuthResult.Success(AuthSession("token", "account-id"))
         }
 
         override suspend fun signUp(request: SignUpRequest): AuthResult<AuthSession> {
             signUpCalled = true
-            return AuthResult.Success(AuthSession("token", 10L))
+            return AuthResult.Success(AuthSession("token", "account-id"))
         }
     }
 }

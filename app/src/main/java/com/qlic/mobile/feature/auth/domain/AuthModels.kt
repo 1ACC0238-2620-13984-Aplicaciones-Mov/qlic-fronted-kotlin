@@ -14,7 +14,9 @@ data class SignUpRequest(
 
 data class AuthSession(
     val accessToken: String,
-    val accountId: Long,
+    val accountId: String,
+    val tokenType: String = "Bearer",
+    val expiresAt: String? = null,
 )
 
 enum class AuthError {
