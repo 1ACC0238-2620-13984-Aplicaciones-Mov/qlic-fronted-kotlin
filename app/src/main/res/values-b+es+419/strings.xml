@@ -35,4 +35,22 @@
     <string name="account_body">Administra tu perfil y las preferencias de la aplicación.</string>
     <string name="auth_required_title">Inicia sesión en Qlic</string>
     <string name="auth_required_body">Accede de forma segura a tu panel de gestión del agua.</string>
+    <string name="auth_welcome">Bienvenido a Qlic</string>
+    <string name="auth_create_title">Crea tu cuenta de Qlic</string>
+    <string name="auth_full_name">Nombre completo</string>
+    <string name="auth_email">Correo electrónico</string>
+    <string name="auth_password">Contraseña</string>
+    <string name="auth_accept_terms">Acepto los términos y condiciones</string>
+    <string name="auth_sign_in">Iniciar sesión</string>
+    <string name="auth_create_account">Crear cuenta</string>
+    <string name="auth_go_to_sign_up">¿No tienes una cuenta? Crea una</string>
+    <string name="auth_go_to_sign_in">¿Ya tienes una cuenta? Inicia sesión</string>
+    <string name="auth_error_name">Ingresa tu nombre completo.</string>
+    <string name="auth_error_email">Ingresa un correo electrónico válido.</string>
+    <string name="auth_error_password">La contraseña debe tener entre 8 y 72 caracteres.</string>
+    <string name="auth_error_terms">Acepta los términos y condiciones para continuar.</string>
+    <string name="auth_error_unauthorized">El correo o la contraseña son incorrectos.</string>
+    <string name="auth_error_network">No pudimos conectarnos. Revisa tu conexión a internet.</string>
+    <string name="auth_error_server">El servicio no está disponible temporalmente.</string>
+    <string name="auth_error_unknown">Ocurrió un problema. Inténtalo nuevamente.</string>
 </resources>

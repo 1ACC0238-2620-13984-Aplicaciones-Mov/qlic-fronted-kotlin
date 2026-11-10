@@ -18,16 +18,16 @@ class LanguageSwitchTest {
     @Test
     fun switchingToSpanishTranslatesContentAndSurvivesRecreation() {
         composeRule.onNodeWithText("English").performClick()
-        composeRule.waitUntilAtLeastOneExists(hasText("Water management dashboard"))
-        composeRule.onNodeWithText("Water management dashboard").assertIsDisplayed()
+        composeRule.waitUntilAtLeastOneExists(hasText("Welcome to Qlic"))
+        composeRule.onNodeWithText("Welcome to Qlic").assertIsDisplayed()
 
         composeRule.onNodeWithText("Español").performClick()
-        composeRule.waitUntilAtLeastOneExists(hasText("Panel de gestión del agua"))
-        composeRule.onNodeWithText("Panel de gestión del agua").assertIsDisplayed()
+        composeRule.waitUntilAtLeastOneExists(hasText("Bienvenido a Qlic"))
+        composeRule.onNodeWithText("Bienvenido a Qlic").assertIsDisplayed()
 
         composeRule.activityRule.scenario.recreate()
 
-        composeRule.waitUntilAtLeastOneExists(hasText("Panel de gestión del agua"))
-        composeRule.onNodeWithText("Panel de gestión del agua").assertIsDisplayed()
+        composeRule.waitUntilAtLeastOneExists(hasText("Bienvenido a Qlic"))
+        composeRule.onNodeWithText("Bienvenido a Qlic").assertIsDisplayed()
     }
 }

@@ -15,11 +15,17 @@ import com.qlic.mobile.core.designsystem.QlicTheme
 import com.qlic.mobile.core.localization.AppLanguage
 import com.qlic.mobile.core.localization.LanguageRepository
 import com.qlic.mobile.core.navigation.QlicNavHost
+import com.qlic.mobile.feature.auth.presentation.AuthScreen
+import com.qlic.mobile.feature.auth.presentation.AuthViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun QlicRoot(languageRepository: LanguageRepository) {
+fun QlicRoot(
+    languageRepository: LanguageRepository,
+    authViewModel: AuthViewModel,
+) {
     val selectedLanguage by languageRepository.language.collectAsStateWithLifecycle(initialValue = null)
+    val authState by authViewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(selectedLanguage) {
@@ -31,14 +37,30 @@ fun QlicRoot(languageRepository: LanguageRepository) {
         }
     }
 
-    QlicApp(
-        selectedLanguage = selectedLanguage ?: AppLanguage.English,
-        onLanguageSelected = { language ->
-            coroutineScope.launch {
-                languageRepository.setLanguage(language)
-            }
-        },
-    )
+    if (authState.isAuthenticated) {
+        QlicApp(
+            selectedLanguage = selectedLanguage ?: AppLanguage.English,
+            onLanguageSelected = { language ->
+                coroutineScope.launch { languageRepository.setLanguage(language) }
+            },
+        )
+    } else {
+        QlicTheme {
+            AuthScreen(
+                state = authState,
+                onEmailChanged = authViewModel::onEmailChanged,
+                onPasswordChanged = authViewModel::onPasswordChanged,
+                onNameChanged = authViewModel::onNameChanged,
+                onTermsChanged = authViewModel::onTermsChanged,
+                onSubmit = authViewModel::submit,
+                onModeChanged = authViewModel::onModeChanged,
+                selectedLanguage = selectedLanguage ?: AppLanguage.English,
+                onLanguageSelected = { language ->
+                    coroutineScope.launch { languageRepository.setLanguage(language) }
+                },
+            )
+        }
+    }
 }
 
 @Composable

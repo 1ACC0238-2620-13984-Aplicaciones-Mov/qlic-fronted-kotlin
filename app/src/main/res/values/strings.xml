@@ -35,4 +35,22 @@
     <string name="account_body">Manage your profile and application preferences.</string>
     <string name="auth_required_title">Sign in to Qlic</string>
     <string name="auth_required_body">Access your water management dashboard securely.</string>
+    <string name="auth_welcome">Welcome to Qlic</string>
+    <string name="auth_create_title">Create your Qlic account</string>
+    <string name="auth_full_name">Full name</string>
+    <string name="auth_email">Email address</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_accept_terms">I accept the terms and conditions</string>
+    <string name="auth_sign_in">Sign in</string>
+    <string name="auth_create_account">Create account</string>
+    <string name="auth_go_to_sign_up">Don\'t have an account? Create account</string>
+    <string name="auth_go_to_sign_in">Already have an account? Sign in</string>
+    <string name="auth_error_name">Enter your full name.</string>
+    <string name="auth_error_email">Enter a valid email address.</string>
+    <string name="auth_error_password">Password must contain between 8 and 72 characters.</string>
+    <string name="auth_error_terms">Accept the terms and conditions to continue.</string>
+    <string name="auth_error_unauthorized">Email or password is incorrect.</string>
+    <string name="auth_error_network">We could not connect. Check your internet connection.</string>
+    <string name="auth_error_server">The service is temporarily unavailable.</string>
+    <string name="auth_error_unknown">Something went wrong. Try again.</string>
 </resources>
