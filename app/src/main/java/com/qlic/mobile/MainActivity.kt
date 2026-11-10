@@ -1,17 +1,19 @@
 package com.qlic.mobile
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.qlic.mobile.app.QlicApp
+import androidx.appcompat.app.AppCompatActivity
+import com.qlic.mobile.app.QlicRoot
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            QlicApp()
+            QlicRoot(
+                languageRepository = (application as QlicApplication).languageRepository,
+            )
         }
     }
 }
