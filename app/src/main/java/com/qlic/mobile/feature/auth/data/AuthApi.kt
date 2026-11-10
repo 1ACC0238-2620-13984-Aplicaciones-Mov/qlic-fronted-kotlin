@@ -1,5 +1,6 @@
 package com.qlic.mobile.feature.auth.data
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -13,34 +14,34 @@ interface AuthApi {
 }
 
 data class SignInDto(
-    val email: String,
-    val password: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
 )
 
 data class SignUpDto(
-    val fullName: String,
-    val email: String,
-    val password: String,
-    val phone: String? = null,
-    val acceptTerms: Boolean,
+    @SerializedName("fullName") val fullName: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("phone") val phone: String? = null,
+    @SerializedName("acceptTerms") val acceptTerms: Boolean,
 )
 
 data class AccountDto(
-    val subscriberId: String,
-    val accountId: String,
-    val email: String,
-    val fullName: String,
-    val phone: String?,
-    val accountName: String,
-    val createdAt: String,
+    @SerializedName("subscriberId") val subscriberId: String,
+    @SerializedName("accountId") val accountId: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("fullName") val fullName: String,
+    @SerializedName("phone") val phone: String?,
+    @SerializedName("accountName") val accountName: String,
+    @SerializedName("createdAt") val createdAt: String,
 )
 
 data class AuthenticationDto(
-    val subscriberId: String,
-    val accountId: String,
-    val email: String,
-    val fullName: String,
-    val token: String,
-    val tokenType: String,
-    val expiresAt: String,
+    @SerializedName("subscriberId") val subscriberId: String,
+    @SerializedName("accountId") val accountId: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("fullName") val fullName: String,
+    @SerializedName("token") val token: String,
+    @SerializedName("tokenType") val tokenType: String,
+    @SerializedName("expiresAt") val expiresAt: String,
 )

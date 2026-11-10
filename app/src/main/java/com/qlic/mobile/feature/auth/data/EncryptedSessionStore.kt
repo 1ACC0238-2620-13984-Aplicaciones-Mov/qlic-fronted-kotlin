@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.qlic.mobile.feature.auth.domain.AuthSession
 import java.io.IOException
+import java.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.map
 class EncryptedSessionStore(
     private val dataStore: DataStore<Preferences>,
     private val tokenCipher: TokenCipher,
+    private val nowProvider: () -> Instant = Instant::now,
 ) : SessionStore {
     override val session: Flow<AuthSession?> = dataStore.data
         .catch { exception ->
@@ -26,11 +28,15 @@ class EncryptedSessionStore(
             val encryptedToken = preferences[tokenKey] ?: return@map null
             val accountId = preferences[accountIdKey] ?: return@map null
             runCatching {
+                val expiresAt = preferences[expiresAtKey]
+                if (expiresAt != null && !Instant.parse(expiresAt).isAfter(nowProvider())) {
+                    return@runCatching null
+                }
                 AuthSession(
                     accessToken = tokenCipher.decrypt(encryptedToken),
                     accountId = accountId,
                     tokenType = preferences[tokenTypeKey] ?: "Bearer",
-                    expiresAt = preferences[expiresAtKey],
+                    expiresAt = expiresAt,
                 )
             }.getOrNull()
         }

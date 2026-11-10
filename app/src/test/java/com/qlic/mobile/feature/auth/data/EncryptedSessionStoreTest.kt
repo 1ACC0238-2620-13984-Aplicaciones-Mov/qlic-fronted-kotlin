@@ -3,6 +3,7 @@ package com.qlic.mobile.feature.auth.data
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.qlic.mobile.feature.auth.domain.AuthSession
 import java.io.File
+import java.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -31,6 +32,7 @@ class EncryptedSessionStoreTest {
         store = EncryptedSessionStore(
             dataStore = PreferenceDataStoreFactory.create(scope = scope, produceFile = { file }),
             tokenCipher = PrefixTokenCipher(),
+            nowProvider = { Instant.parse("2026-11-10T00:00:00Z") },
         )
     }
 
@@ -50,6 +52,13 @@ class EncryptedSessionStoreTest {
     @Test
     fun `clear keeps an empty store unauthenticated`() = runBlocking {
         store.clear()
+        assertNull(store.session.first())
+    }
+
+    @Test
+    fun `expired session is not restored`() = runBlocking {
+        store.save(AuthSession("jwt", "account-uuid", expiresAt = "2026-01-01T00:00:00Z"))
+
         assertNull(store.session.first())
     }
 

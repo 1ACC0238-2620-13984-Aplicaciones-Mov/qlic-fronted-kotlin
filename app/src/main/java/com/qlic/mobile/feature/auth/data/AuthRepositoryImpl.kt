@@ -7,6 +7,7 @@ import com.qlic.mobile.feature.auth.domain.AuthSession
 import com.qlic.mobile.feature.auth.domain.SignInRequest
 import com.qlic.mobile.feature.auth.domain.SignUpRequest
 import java.io.IOException
+import kotlinx.coroutines.CancellationException
 import retrofit2.Response
 
 class AuthRepositoryImpl(
@@ -18,6 +19,8 @@ class AuthRepositoryImpl(
         response.toAuthResult()?.also { sessionStore.save(it) }
             ?.let { AuthResult.Success(it) }
             ?: AuthResult.Failure(response.toAuthError())
+    } catch (exception: CancellationException) {
+        throw exception
     } catch (_: IOException) {
         AuthResult.Failure(AuthError.Network)
     } catch (_: Exception) {
@@ -38,6 +41,8 @@ class AuthRepositoryImpl(
         } else {
             AuthResult.Failure(response.toAuthError())
         }
+    } catch (exception: CancellationException) {
+        throw exception
     } catch (_: IOException) {
         AuthResult.Failure(AuthError.Network)
     } catch (_: Exception) {

@@ -7,8 +7,10 @@ import com.qlic.mobile.feature.auth.domain.SignUpRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CancellationException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertThrows
 import org.junit.Test
 import retrofit2.Response
 
@@ -37,6 +39,24 @@ class AuthRepositoryImplTest {
         assertTrue(result is AuthResult.Success<*>)
         assertTrue(api.signUpCalled)
         assertTrue(api.signInCalled)
+    }
+
+    @Test
+    fun `sign in preserves coroutine cancellation`() {
+        assertThrows(CancellationException::class.java) {
+            runBlocking {
+                val repository = AuthRepositoryImpl(
+                    api = object : AuthApi by FakeAuthApi() {
+                        override suspend fun signIn(request: SignInDto): Response<AuthenticationDto> {
+                            throw CancellationException("cancelled")
+                        }
+                    },
+                    sessionStore = FakeSessionStore(),
+                )
+
+                repository.signIn(SignInRequest("ana@qlic.com", "valid-pass"))
+            }
+        }
     }
 
     private class FakeAuthApi : AuthApi {
