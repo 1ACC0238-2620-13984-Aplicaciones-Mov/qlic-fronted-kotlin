@@ -15,6 +15,8 @@ data class SignUpRequest(
 data class AuthSession(
     val accessToken: String,
     val accountId: String,
+    val email: String = "",
+    val fullName: String = "",
     val tokenType: String = "Bearer",
     val expiresAt: String? = null,
 )

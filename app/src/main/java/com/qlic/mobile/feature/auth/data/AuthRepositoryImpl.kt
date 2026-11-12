@@ -55,6 +55,8 @@ class AuthRepositoryImpl(
             AuthSession(
                 accessToken = body.token,
                 accountId = body.accountId,
+                email = body.email,
+                fullName = body.fullName,
                 tokenType = body.tokenType,
                 expiresAt = body.expiresAt,
             )

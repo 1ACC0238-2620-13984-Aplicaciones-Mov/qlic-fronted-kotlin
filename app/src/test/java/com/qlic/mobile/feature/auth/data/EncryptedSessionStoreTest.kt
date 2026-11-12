@@ -43,7 +43,14 @@ class EncryptedSessionStoreTest {
 
     @Test
     fun `session is encrypted and persisted`() = runBlocking {
-        val session = AuthSession("jwt", "account-uuid", expiresAt = "2026-12-01T00:00:00Z")
+        val session = AuthSession(
+            accessToken = "jwt",
+            accountId = "account-uuid",
+            email = "ana@qlic.com",
+            fullName = "Ana Ruiz",
+            tokenType = "Bearer",
+            expiresAt = "2026-12-01T00:00:00Z",
+        )
 
         store.save(session)
         assertEquals(session, store.session.first())

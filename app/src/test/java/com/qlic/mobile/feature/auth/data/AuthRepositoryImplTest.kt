@@ -23,7 +23,12 @@ class AuthRepositoryImplTest {
         val result = repository.signIn(SignInRequest("ana@qlic.com", "valid-pass"))
 
         assertTrue(result is AuthResult.Success<*>)
-        assertEquals("account-uuid", (result as AuthResult.Success<AuthSession>).value.accountId)
+        val session = (result as AuthResult.Success<AuthSession>).value
+        assertEquals("account-uuid", session.accountId)
+        assertEquals("ana@qlic.com", session.email)
+        assertEquals("Ana Ruiz", session.fullName)
+        assertEquals("Bearer", session.tokenType)
+        assertEquals("2026-12-01T00:00:00Z", session.expiresAt)
         assertEquals("jwt-token", sessionStore.savedSession?.accessToken)
     }
 

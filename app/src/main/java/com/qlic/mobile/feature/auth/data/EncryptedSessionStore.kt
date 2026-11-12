@@ -35,6 +35,8 @@ class EncryptedSessionStore(
                 AuthSession(
                     accessToken = tokenCipher.decrypt(encryptedToken),
                     accountId = accountId,
+                    email = preferences[emailKey].orEmpty(),
+                    fullName = preferences[fullNameKey].orEmpty(),
                     tokenType = preferences[tokenTypeKey] ?: "Bearer",
                     expiresAt = expiresAt,
                 )
@@ -46,6 +48,8 @@ class EncryptedSessionStore(
         dataStore.edit { preferences ->
             preferences[tokenKey] = encryptedToken
             preferences[accountIdKey] = session.accountId
+            preferences[emailKey] = session.email
+            preferences[fullNameKey] = session.fullName
             preferences[tokenTypeKey] = session.tokenType
             session.expiresAt?.let { preferences[expiresAtKey] = it }
                 ?: preferences.remove(expiresAtKey)
@@ -56,6 +60,8 @@ class EncryptedSessionStore(
         dataStore.edit { preferences ->
             preferences.remove(tokenKey)
             preferences.remove(accountIdKey)
+            preferences.remove(emailKey)
+            preferences.remove(fullNameKey)
             preferences.remove(tokenTypeKey)
             preferences.remove(expiresAtKey)
         }
@@ -64,6 +70,8 @@ class EncryptedSessionStore(
     private companion object {
         val tokenKey = stringPreferencesKey("encrypted_access_token")
         val accountIdKey = stringPreferencesKey("account_id")
+        val emailKey = stringPreferencesKey("email")
+        val fullNameKey = stringPreferencesKey("full_name")
         val tokenTypeKey = stringPreferencesKey("token_type")
         val expiresAtKey = stringPreferencesKey("expires_at")
     }
