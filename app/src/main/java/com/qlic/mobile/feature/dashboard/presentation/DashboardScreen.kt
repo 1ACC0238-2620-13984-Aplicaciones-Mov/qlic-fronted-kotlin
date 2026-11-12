@@ -38,6 +38,7 @@ fun DashboardScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleLarge)
         Text(stringResource(R.string.dashboard_eyebrow), color = MaterialTheme.colorScheme.primary)
         Text(stringResource(R.string.dashboard_title), style = MaterialTheme.typography.headlineMedium)
         Text(stringResource(R.string.dashboard_real_data_note), color = MaterialTheme.colorScheme.onSurfaceVariant)
