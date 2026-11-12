@@ -25,6 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.qlic.mobile.R
@@ -83,7 +85,7 @@ private fun ThresholdSection(
     onSave: (String, String, String, String) -> Unit,
 ) {
     var waterPointId by rememberSaveable { mutableStateOf("") }
-    var period by rememberSaveable { mutableStateOf("HOURLY") }
+    val period = "HOURLY"
     var customLimit by rememberSaveable { mutableStateOf("") }
     var baseline by rememberSaveable { mutableStateOf("") }
 
@@ -111,13 +113,7 @@ private fun ThresholdSection(
             isError = state.formError == AlertFormError.WaterPointRequired,
             errorMessage = state.formError.errorMessageOrNull(AlertFormError.WaterPointRequired),
         )
-        QlicTextField(
-            value = period,
-            onValueChange = { period = it },
-            label = stringResource(R.string.alert_settings_period),
-            isError = state.formError == AlertFormError.PeriodRequired,
-            errorMessage = state.formError.errorMessageOrNull(AlertFormError.PeriodRequired),
-        )
+        Text(stringResource(R.string.alert_settings_period_hourly))
         QlicTextField(
             value = customLimit,
             onValueChange = { customLimit = it },
@@ -249,6 +245,9 @@ private fun RecipientRow(
             checked = recipient.enabled,
             onCheckedChange = { onToggle(recipient.id, it) },
             enabled = enabled,
+            modifier = Modifier.semantics {
+                contentDescription = recipient.fullName
+            },
         )
     }
 }

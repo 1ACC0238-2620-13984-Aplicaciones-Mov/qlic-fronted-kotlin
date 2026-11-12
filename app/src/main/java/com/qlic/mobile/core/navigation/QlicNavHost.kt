@@ -113,7 +113,7 @@ fun QlicNavHost(
                         icon = {
                             Icon(
                                 painter = painterResource(requireNotNull(destination.iconRes)),
-                                contentDescription = null,
+                                contentDescription = stringResource(destination.labelRes),
                             )
                         },
                         label = { Text(stringResource(destination.labelRes)) },

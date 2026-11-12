@@ -76,6 +76,7 @@
     <string name="device_stop_scanner">Cerrar escáner</string>
     <string name="device_camera_denied">No se concedió acceso a la cámara. Ingresa manualmente el contenido del código QR.</string>
     <string name="device_manual_entry">Siempre puedes ingresar manualmente el contenido del código QR.</string>
+    <string name="device_qr_camera_preview">Vista previa de la cámara para el código QR</string>
     <string name="device_save">Registrar dispositivo</string>
     <string name="device_error_qr">Escanea o ingresa el contenido del código QR.</string>
     <string name="device_error_serial">Ingresa el número de serie del dispositivo.</string>
@@ -129,6 +130,7 @@
     <string name="alert_settings_threshold_summary">%1$s · %2$s L/hora</string>
     <string name="alert_settings_water_point">Identificador del punto de agua</string>
     <string name="alert_settings_period">Periodo</string>
+    <string name="alert_settings_period_hourly">Periodo: por hora</string>
     <string name="alert_settings_custom_limit">Límite personalizado (L/hora, opcional)</string>
     <string name="alert_settings_baseline">Línea base (L/hora)</string>
     <string name="alert_settings_save_threshold">Guardar umbral</string>
