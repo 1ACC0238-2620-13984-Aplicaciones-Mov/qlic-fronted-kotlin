@@ -13,3 +13,4 @@ keystore.properties
 google-services.json
 firebase-debug.log*
 *.hprof
+.worktrees/
