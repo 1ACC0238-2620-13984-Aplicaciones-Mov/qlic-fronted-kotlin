@@ -21,7 +21,10 @@ import com.qlic.mobile.feature.auth.presentation.AuthScreen
 import com.qlic.mobile.feature.auth.presentation.AuthViewModel
 import com.qlic.mobile.feature.dashboard.presentation.DashboardViewModel
 import com.qlic.mobile.feature.devices.presentation.DevicesViewModel
+import com.qlic.mobile.feature.consumption.presentation.ConsumptionViewModel
+import com.qlic.mobile.feature.sharing.presentation.SharingViewModel
 import com.qlic.mobile.feature.subscriptions.presentation.SubscriptionViewModel
+import com.qlic.mobile.feature.support.presentation.SupportViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -32,6 +35,9 @@ fun QlicRoot(
     devicesViewModel: DevicesViewModel,
     alertsViewModel: AlertsViewModel,
     subscriptionViewModel: SubscriptionViewModel,
+    consumptionViewModel: ConsumptionViewModel,
+    supportViewModel: SupportViewModel,
+    sharingViewModel: SharingViewModel,
 ) {
     val selectedLanguage by languageRepository.language.collectAsStateWithLifecycle(initialValue = null)
     val authState by authViewModel.state.collectAsStateWithLifecycle()
@@ -54,6 +60,9 @@ fun QlicRoot(
             devicesViewModel.retry()
             alertsViewModel.retry()
             subscriptionViewModel.retry()
+            consumptionViewModel.retry()
+            supportViewModel.retry()
+            sharingViewModel.retry()
         }
     }
 
@@ -67,6 +76,9 @@ fun QlicRoot(
             devicesViewModel = devicesViewModel,
             alertsViewModel = alertsViewModel,
             subscriptionViewModel = subscriptionViewModel,
+            consumptionViewModel = consumptionViewModel,
+            supportViewModel = supportViewModel,
+            sharingViewModel = sharingViewModel,
             accountState = AccountUiState(
                 fullName = authState.sessionFullName,
                 email = authState.sessionEmail,
@@ -101,6 +113,9 @@ fun QlicApp(
     devicesViewModel: DevicesViewModel? = null,
     alertsViewModel: AlertsViewModel? = null,
     subscriptionViewModel: SubscriptionViewModel? = null,
+    consumptionViewModel: ConsumptionViewModel? = null,
+    supportViewModel: SupportViewModel? = null,
+    sharingViewModel: SharingViewModel? = null,
     accountState: AccountUiState = AccountUiState("", "", ""),
     onSignOut: () -> Unit = {},
 ) {
@@ -116,6 +131,9 @@ fun QlicApp(
                 devicesViewModel = devicesViewModel,
                 alertsViewModel = alertsViewModel,
                 subscriptionViewModel = subscriptionViewModel,
+                consumptionViewModel = consumptionViewModel,
+                supportViewModel = supportViewModel,
+                sharingViewModel = sharingViewModel,
                 accountState = accountState,
                 onSignOut = onSignOut,
             )

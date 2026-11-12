@@ -17,7 +17,16 @@ import com.qlic.mobile.feature.auth.domain.SignUpUseCase
 import com.qlic.mobile.feature.alerts.data.AlertApi
 import com.qlic.mobile.feature.alerts.data.AlertRepositoryImpl
 import com.qlic.mobile.feature.alerts.domain.AlertRepository
+import com.qlic.mobile.feature.consumption.data.ConsumptionApi
+import com.qlic.mobile.feature.consumption.data.ConsumptionRepositoryImpl
+import com.qlic.mobile.feature.consumption.domain.ConsumptionRepository
 import com.qlic.mobile.feature.devices.data.DeviceApi
+import com.qlic.mobile.feature.sharing.data.SharingApi
+import com.qlic.mobile.feature.sharing.data.SharingRepositoryImpl
+import com.qlic.mobile.feature.sharing.domain.SharingRepository
+import com.qlic.mobile.feature.support.data.SupportApi
+import com.qlic.mobile.feature.support.data.SupportRepositoryImpl
+import com.qlic.mobile.feature.support.domain.SupportRepository
 import com.qlic.mobile.feature.devices.data.DeviceRepositoryImpl
 import com.qlic.mobile.feature.devices.domain.DeviceRepository
 import com.qlic.mobile.feature.subscriptions.data.SubscriptionApi
@@ -87,6 +96,18 @@ class QlicApplication : Application() {
             api = authenticatedRetrofit.create(SubscriptionApi::class.java),
             sessionSnapshot = sessionSnapshot,
         )
+    }
+
+    val consumptionRepository: ConsumptionRepository by lazy {
+        ConsumptionRepositoryImpl(authenticatedRetrofit.create(ConsumptionApi::class.java))
+    }
+
+    val supportRepository: SupportRepository by lazy {
+        SupportRepositoryImpl(authenticatedRetrofit.create(SupportApi::class.java))
+    }
+
+    val sharingRepository: SharingRepository by lazy {
+        SharingRepositoryImpl(authenticatedRetrofit.create(SharingApi::class.java))
     }
 
     override fun onCreate() {

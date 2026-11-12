@@ -12,7 +12,10 @@ import com.qlic.mobile.feature.alerts.presentation.AlertsViewModel
 import com.qlic.mobile.feature.auth.presentation.AuthViewModel
 import com.qlic.mobile.feature.dashboard.presentation.DashboardViewModel
 import com.qlic.mobile.feature.devices.presentation.DevicesViewModel
+import com.qlic.mobile.feature.consumption.presentation.ConsumptionViewModel
+import com.qlic.mobile.feature.sharing.presentation.SharingViewModel
 import com.qlic.mobile.feature.subscriptions.presentation.SubscriptionViewModel
+import com.qlic.mobile.feature.support.presentation.SupportViewModel
 
 class MainActivity : AppCompatActivity() {
     private val authViewModel: AuthViewModel by viewModels {
@@ -33,6 +36,21 @@ class MainActivity : AppCompatActivity() {
     private val subscriptionViewModel: SubscriptionViewModel by viewModels {
         val app = application as QlicApplication
         QlicViewModelFactory { SubscriptionViewModel(app.subscriptionRepository) }
+    }
+
+    private val consumptionViewModel: ConsumptionViewModel by viewModels {
+        val app = application as QlicApplication
+        QlicViewModelFactory { ConsumptionViewModel(app.consumptionRepository) }
+    }
+
+    private val supportViewModel: SupportViewModel by viewModels {
+        val app = application as QlicApplication
+        QlicViewModelFactory { SupportViewModel(app.supportRepository) }
+    }
+
+    private val sharingViewModel: SharingViewModel by viewModels {
+        val app = application as QlicApplication
+        QlicViewModelFactory { SharingViewModel(app.sharingRepository) }
     }
 
     private val dashboardViewModel: DashboardViewModel by viewModels {
@@ -57,6 +75,9 @@ class MainActivity : AppCompatActivity() {
                 devicesViewModel = devicesViewModel,
                 alertsViewModel = alertsViewModel,
                 subscriptionViewModel = subscriptionViewModel,
+                consumptionViewModel = consumptionViewModel,
+                supportViewModel = supportViewModel,
+                sharingViewModel = sharingViewModel,
             )
         }
     }
