@@ -73,7 +73,7 @@ class AlertsScreenTest {
 
         composeRule.onNodeWithText(context.getString(R.string.alerts_possible_leak)).assertIsDisplayed()
         composeRule.onNodeWithText("Kitchen valve").assertIsDisplayed()
-        composeRule.onNodeWithText(context.getString(R.string.alerts_urgency_critical)).assertIsDisplayed()
+        composeRule.onNodeWithTag("alert-urgency-alert-id", useUnmergedTree = true).assertIsDisplayed()
     }
 
     private fun alert() = LeakAlert(

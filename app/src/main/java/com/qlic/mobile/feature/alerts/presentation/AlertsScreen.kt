@@ -136,11 +136,16 @@ private fun AlertCard(alert: LeakAlert, onAlertClick: (String) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(stringResource(R.string.alerts_possible_leak), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.alerts_possible_leak),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f),
+                )
                 Text(
                     stringResource(alert.urgency.labelResource()),
                     color = alert.urgency.labelColor(),
                     style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.testTag("alert-urgency-${alert.id}"),
                 )
             }
             Text(alert.waterPointId, style = MaterialTheme.typography.bodyMedium)
