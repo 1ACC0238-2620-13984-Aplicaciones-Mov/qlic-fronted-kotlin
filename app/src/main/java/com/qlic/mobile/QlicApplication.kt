@@ -14,6 +14,15 @@ import com.qlic.mobile.feature.auth.data.SessionStore
 import com.qlic.mobile.feature.auth.domain.AuthRepository
 import com.qlic.mobile.feature.auth.domain.SignInUseCase
 import com.qlic.mobile.feature.auth.domain.SignUpUseCase
+import com.qlic.mobile.feature.alerts.data.AlertApi
+import com.qlic.mobile.feature.alerts.data.AlertRepositoryImpl
+import com.qlic.mobile.feature.alerts.domain.AlertRepository
+import com.qlic.mobile.feature.devices.data.DeviceApi
+import com.qlic.mobile.feature.devices.data.DeviceRepositoryImpl
+import com.qlic.mobile.feature.devices.domain.DeviceRepository
+import com.qlic.mobile.feature.subscriptions.data.SubscriptionApi
+import com.qlic.mobile.feature.subscriptions.data.SubscriptionRepositoryImpl
+import com.qlic.mobile.feature.subscriptions.domain.SubscriptionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -58,6 +67,27 @@ class QlicApplication : Application() {
 
     val signInUseCase: SignInUseCase by lazy { SignInUseCase(authRepository) }
     val signUpUseCase: SignUpUseCase by lazy { SignUpUseCase(authRepository) }
+
+    val deviceRepository: DeviceRepository by lazy {
+        DeviceRepositoryImpl(
+            api = authenticatedRetrofit.create(DeviceApi::class.java),
+            sessionSnapshot = sessionSnapshot,
+        )
+    }
+
+    val alertRepository: AlertRepository by lazy {
+        AlertRepositoryImpl(
+            api = authenticatedRetrofit.create(AlertApi::class.java),
+            sessionSnapshot = sessionSnapshot,
+        )
+    }
+
+    val subscriptionRepository: SubscriptionRepository by lazy {
+        SubscriptionRepositoryImpl(
+            api = authenticatedRetrofit.create(SubscriptionApi::class.java),
+            sessionSnapshot = sessionSnapshot,
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()

@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val signInUseCase: SignInUseCase,
     private val signUpUseCase: SignUpUseCase,
-    sessionStore: SessionStore,
+    private val sessionStore: SessionStore,
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(AuthUiState())
     val state: StateFlow<AuthUiState> = mutableState.asStateFlow()
@@ -26,7 +26,14 @@ class AuthViewModel(
     init {
         viewModelScope.launch {
             sessionStore.session.collect { session ->
-                mutableState.update { it.copy(isAuthenticated = session != null) }
+                mutableState.update {
+                    it.copy(
+                        isAuthenticated = session != null,
+                        accountId = session?.accountId.orEmpty(),
+                        sessionEmail = session?.email.orEmpty(),
+                        sessionFullName = session?.fullName.orEmpty(),
+                    )
+                }
             }
         }
     }
@@ -61,6 +68,10 @@ class AuthViewModel(
                 }
             }
         }
+    }
+
+    fun signOut() {
+        viewModelScope.launch { sessionStore.clear() }
     }
 
     class Factory(

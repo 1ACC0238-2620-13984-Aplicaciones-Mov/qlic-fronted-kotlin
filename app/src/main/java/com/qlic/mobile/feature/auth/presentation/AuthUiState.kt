@@ -12,5 +12,8 @@ data class AuthUiState(
     val acceptedTerms: Boolean = false,
     val isLoading: Boolean = false,
     val isAuthenticated: Boolean = false,
+    val accountId: String = "",
+    val sessionEmail: String = "",
+    val sessionFullName: String = "",
     val error: AuthError? = null,
 )

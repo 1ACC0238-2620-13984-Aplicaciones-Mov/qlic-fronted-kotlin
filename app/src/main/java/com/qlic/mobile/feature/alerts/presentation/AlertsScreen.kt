@@ -55,7 +55,10 @@ fun AlertsScreen(
                 Text(stringResource(R.string.alerts_eyebrow), color = MaterialTheme.colorScheme.primary)
                 Text(stringResource(R.string.alerts_title), style = MaterialTheme.typography.headlineMedium)
             }
-            TextButton(onClick = onSettingsClick) {
+            TextButton(
+                onClick = onSettingsClick,
+                modifier = Modifier.testTag("alerts-settings"),
+            ) {
                 Text(stringResource(R.string.alerts_settings))
             }
         }

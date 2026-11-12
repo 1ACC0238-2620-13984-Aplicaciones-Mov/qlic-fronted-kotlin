@@ -218,4 +218,10 @@
     <string name="tanks_unavailable_body">El backend actual todavía no ofrece endpoints de inventario de tanques.</string>
     <string name="support_unavailable_title">Tickets de soporte no disponibles</string>
     <string name="support_unavailable_body">El backend actual todavía no ofrece endpoints de tickets de soporte.</string>
+    <string name="account_read_only_note">Estos datos provienen de tu sesión segura. La edición del perfil no está disponible en el servicio actual.</string>
+    <string name="account_full_name">Nombre completo</string>
+    <string name="account_email">Correo electrónico</string>
+    <string name="account_identifier">Identificador de cuenta</string>
+    <string name="account_value_unavailable">No proporcionado</string>
+    <string name="account_sign_out">Cerrar sesión</string>
 </resources>

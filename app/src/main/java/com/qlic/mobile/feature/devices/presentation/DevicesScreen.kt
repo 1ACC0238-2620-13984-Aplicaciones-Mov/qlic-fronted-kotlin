@@ -54,6 +54,7 @@ fun DevicesScreen(
             text = stringResource(R.string.devices_add),
             onClick = onRegisterClick,
             enabled = !state.isSubmitting,
+            modifier = Modifier.testTag("devices-add"),
         )
 
         when {

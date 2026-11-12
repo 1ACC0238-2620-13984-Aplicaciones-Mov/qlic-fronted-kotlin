@@ -15,14 +15,23 @@ import com.qlic.mobile.core.designsystem.QlicTheme
 import com.qlic.mobile.core.localization.AppLanguage
 import com.qlic.mobile.core.localization.LanguageRepository
 import com.qlic.mobile.core.navigation.QlicNavHost
+import com.qlic.mobile.feature.account.AccountUiState
+import com.qlic.mobile.feature.alerts.presentation.AlertsViewModel
 import com.qlic.mobile.feature.auth.presentation.AuthScreen
 import com.qlic.mobile.feature.auth.presentation.AuthViewModel
+import com.qlic.mobile.feature.dashboard.presentation.DashboardViewModel
+import com.qlic.mobile.feature.devices.presentation.DevicesViewModel
+import com.qlic.mobile.feature.subscriptions.presentation.SubscriptionViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun QlicRoot(
     languageRepository: LanguageRepository,
     authViewModel: AuthViewModel,
+    dashboardViewModel: DashboardViewModel,
+    devicesViewModel: DevicesViewModel,
+    alertsViewModel: AlertsViewModel,
+    subscriptionViewModel: SubscriptionViewModel,
 ) {
     val selectedLanguage by languageRepository.language.collectAsStateWithLifecycle(initialValue = null)
     val authState by authViewModel.state.collectAsStateWithLifecycle()
@@ -37,12 +46,33 @@ fun QlicRoot(
         }
     }
 
+    LaunchedEffect(authState.isAuthenticated) {
+        if (authState.isAuthenticated) {
+            dashboardViewModel.retryDevices()
+            dashboardViewModel.retryAlerts()
+            dashboardViewModel.retrySubscription()
+            devicesViewModel.retry()
+            alertsViewModel.retry()
+            subscriptionViewModel.retry()
+        }
+    }
+
     if (authState.isAuthenticated) {
         QlicApp(
             selectedLanguage = selectedLanguage ?: AppLanguage.English,
             onLanguageSelected = { language ->
                 coroutineScope.launch { languageRepository.setLanguage(language) }
             },
+            dashboardViewModel = dashboardViewModel,
+            devicesViewModel = devicesViewModel,
+            alertsViewModel = alertsViewModel,
+            subscriptionViewModel = subscriptionViewModel,
+            accountState = AccountUiState(
+                fullName = authState.sessionFullName,
+                email = authState.sessionEmail,
+                accountId = authState.accountId,
+            ),
+            onSignOut = authViewModel::signOut,
         )
     } else {
         QlicTheme {
@@ -67,6 +97,12 @@ fun QlicRoot(
 fun QlicApp(
     selectedLanguage: AppLanguage = AppLanguage.English,
     onLanguageSelected: (AppLanguage) -> Unit = {},
+    dashboardViewModel: DashboardViewModel? = null,
+    devicesViewModel: DevicesViewModel? = null,
+    alertsViewModel: AlertsViewModel? = null,
+    subscriptionViewModel: SubscriptionViewModel? = null,
+    accountState: AccountUiState = AccountUiState("", "", ""),
+    onSignOut: () -> Unit = {},
 ) {
     QlicTheme {
         Surface(
@@ -74,9 +110,14 @@ fun QlicApp(
             color = MaterialTheme.colorScheme.background,
         ) {
             QlicNavHost(
-                isAuthenticated = true,
                 selectedLanguage = selectedLanguage,
                 onLanguageSelected = onLanguageSelected,
+                dashboardViewModel = dashboardViewModel,
+                devicesViewModel = devicesViewModel,
+                alertsViewModel = alertsViewModel,
+                subscriptionViewModel = subscriptionViewModel,
+                accountState = accountState,
+                onSignOut = onSignOut,
             )
         }
     }

@@ -218,4 +218,10 @@
     <string name="tanks_unavailable_body">The current backend does not provide tank inventory endpoints yet.</string>
     <string name="support_unavailable_title">Support tickets unavailable</string>
     <string name="support_unavailable_body">The current backend does not provide support-ticket endpoints yet.</string>
+    <string name="account_read_only_note">These details come from your secure session. Profile editing is not available in the current service.</string>
+    <string name="account_full_name">Full name</string>
+    <string name="account_email">Email address</string>
+    <string name="account_identifier">Account identifier</string>
+    <string name="account_value_unavailable">Not provided</string>
+    <string name="account_sign_out">Sign out</string>
 </resources>

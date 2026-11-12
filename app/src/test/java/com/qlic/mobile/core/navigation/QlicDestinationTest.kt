@@ -15,7 +15,7 @@ class QlicDestinationTest {
     @Test
     fun `secondary destinations stay under their approved sections`() {
         assertEquals(
-            listOf("devices", "tanks"),
+            listOf("devices", "tanks", "subscription"),
             QlicDestination.business.map(QlicDestination::route),
         )
         assertEquals(

@@ -18,10 +18,16 @@ sealed class QlicDestination(
     data object Tanks : QlicDestination("tanks", R.string.nav_tanks)
     data object Support : QlicDestination("support", R.string.nav_support)
     data object Account : QlicDestination("account", R.string.nav_account)
+    data object DeviceRegistration : QlicDestination("device-registration", R.string.device_registration_title)
+    data object AlertSettings : QlicDestination("alert-settings", R.string.alert_settings_title)
+    data object Subscription : QlicDestination("subscription", R.string.subscription_title)
+    data object AlertDetail : QlicDestination("alert-detail/{alertId}", R.string.alert_detail_title) {
+        fun createRoute(alertId: String): String = "alert-detail/$alertId"
+    }
 
     companion object {
         val primary: List<QlicDestination> = listOf(Dashboard, Alerts, Reports, Business, More)
-        val business: List<QlicDestination> = listOf(Devices, Tanks)
+        val business: List<QlicDestination> = listOf(Devices, Tanks, Subscription)
         val more: List<QlicDestination> = listOf(Support, Account)
     }
 }
