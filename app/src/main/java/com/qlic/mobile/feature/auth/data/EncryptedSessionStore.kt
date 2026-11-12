@@ -15,6 +15,7 @@ class EncryptedSessionStore(
     private val dataStore: DataStore<Preferences>,
     private val tokenCipher: TokenCipher,
     private val nowProvider: () -> Instant = Instant::now,
+    private val onSessionChanged: (AuthSession?) -> Unit = {},
 ) : SessionStore {
     override val session: Flow<AuthSession?> = dataStore.data
         .catch { exception ->
@@ -40,7 +41,7 @@ class EncryptedSessionStore(
                     tokenType = preferences[tokenTypeKey] ?: "Bearer",
                     expiresAt = expiresAt,
                 )
-            }.getOrNull()
+            }.getOrNull().also(onSessionChanged)
         }
 
     override suspend fun save(session: AuthSession) {
@@ -54,6 +55,7 @@ class EncryptedSessionStore(
             session.expiresAt?.let { preferences[expiresAtKey] = it }
                 ?: preferences.remove(expiresAtKey)
         }
+        onSessionChanged(session)
     }
 
     override suspend fun clear() {
@@ -65,6 +67,7 @@ class EncryptedSessionStore(
             preferences.remove(tokenTypeKey)
             preferences.remove(expiresAtKey)
         }
+        onSessionChanged(null)
     }
 
     private companion object {

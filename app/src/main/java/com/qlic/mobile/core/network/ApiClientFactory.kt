@@ -8,18 +8,28 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClientFactory {
-    fun createAuthApi(): AuthApi {
-        val httpClient = OkHttpClient.Builder()
+    fun createAuthApi(): AuthApi = createRetrofit(createHttpClient())
+        .create(AuthApi::class.java)
+
+    fun createAuthenticatedRetrofit(
+        sessionSnapshot: SessionSnapshot,
+        onUnauthorized: () -> Unit,
+    ): Retrofit = createRetrofit(
+        createHttpClient()
+            .newBuilder()
+            .addInterceptor(AuthInterceptor(sessionSnapshot, onUnauthorized))
+            .build(),
+    )
+
+    private fun createHttpClient(): OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .build()
 
-        return Retrofit.Builder()
+    private fun createRetrofit(httpClient: OkHttpClient): Retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.API_BASE_URL)
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(AuthApi::class.java)
-    }
 }

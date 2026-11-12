@@ -69,6 +69,24 @@ class EncryptedSessionStoreTest {
         assertNull(store.session.first())
     }
 
+    @Test
+    fun `save updates session observer before returning`() = runBlocking {
+        var observed: AuthSession? = null
+        val observedStore = EncryptedSessionStore(
+            dataStore = PreferenceDataStoreFactory.create(
+                scope = scope,
+                produceFile = { File(temporaryFolder.newFolder("observed"), "session.preferences_pb") },
+            ),
+            tokenCipher = PrefixTokenCipher(),
+            onSessionChanged = { observed = it },
+        )
+        val session = AuthSession("jwt", "account-uuid")
+
+        observedStore.save(session)
+
+        assertEquals(session, observed)
+    }
+
     private class PrefixTokenCipher : TokenCipher {
         override fun encrypt(plainText: String): String = "encrypted:$plainText"
         override fun decrypt(cipherText: String): String = cipherText.removePrefix("encrypted:")
