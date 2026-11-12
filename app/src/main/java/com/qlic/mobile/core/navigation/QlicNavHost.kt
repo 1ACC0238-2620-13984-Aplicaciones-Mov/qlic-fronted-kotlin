@@ -46,7 +46,16 @@ import com.qlic.mobile.feature.devices.presentation.DeviceRegistrationScreen
 import com.qlic.mobile.feature.devices.presentation.DevicesScreen
 import com.qlic.mobile.feature.devices.presentation.DevicesUiState
 import com.qlic.mobile.feature.devices.presentation.DevicesViewModel
+import com.qlic.mobile.feature.consumption.presentation.ConsumptionScreen
+import com.qlic.mobile.feature.consumption.presentation.ConsumptionUiState
+import com.qlic.mobile.feature.consumption.presentation.ConsumptionViewModel
+import com.qlic.mobile.feature.sharing.presentation.SharingScreen
+import com.qlic.mobile.feature.sharing.presentation.SharingUiState
+import com.qlic.mobile.feature.sharing.presentation.SharingViewModel
 import com.qlic.mobile.feature.subscriptions.presentation.SubscriptionScreen
+import com.qlic.mobile.feature.support.presentation.SupportScreen
+import com.qlic.mobile.feature.support.presentation.SupportUiState
+import com.qlic.mobile.feature.support.presentation.SupportViewModel
 import com.qlic.mobile.feature.subscriptions.presentation.SubscriptionUiState
 import com.qlic.mobile.feature.subscriptions.presentation.SubscriptionViewModel
 
@@ -58,6 +67,9 @@ fun QlicNavHost(
     devicesViewModel: DevicesViewModel?,
     alertsViewModel: AlertsViewModel?,
     subscriptionViewModel: SubscriptionViewModel?,
+    consumptionViewModel: ConsumptionViewModel?,
+    supportViewModel: SupportViewModel?,
+    sharingViewModel: SharingViewModel?,
     accountState: AccountUiState,
     onSignOut: () -> Unit,
 ) {
@@ -88,6 +100,25 @@ fun QlicNavHost(
         state
     } else {
         SubscriptionUiState()
+    }
+
+    val consumptionState = if (consumptionViewModel != null) {
+        val state by consumptionViewModel.state.collectAsStateWithLifecycle()
+        state
+    } else {
+        ConsumptionUiState()
+    }
+    val supportState = if (supportViewModel != null) {
+        val state by supportViewModel.state.collectAsStateWithLifecycle()
+        state
+    } else {
+        SupportUiState()
+    }
+    val sharingState = if (sharingViewModel != null) {
+        val state by sharingViewModel.state.collectAsStateWithLifecycle()
+        state
+    } else {
+        SharingUiState()
     }
 
     val navController = rememberNavController()
@@ -154,10 +185,14 @@ fun QlicNavHost(
                 )
             }
             composable(QlicDestination.Reports.route) {
-                UnavailableScreen(
-                    R.string.reports_unavailable_title,
-                    R.string.reports_unavailable_body,
-                    "screen-reports",
+                ConsumptionScreen(
+                    state = consumptionState,
+                    onRetry = { consumptionViewModel?.retry() },
+                    onOpeningChanged = { consumptionViewModel?.onOpeningChanged(it) },
+                    onClosingChanged = { consumptionViewModel?.onClosingChanged(it) },
+                    onDayToggled = { consumptionViewModel?.toggleDay(it) },
+                    onSave = { consumptionViewModel?.saveSchedule() },
+                    modifier = Modifier.testTag("screen-reports"),
                 )
             }
             composable(QlicDestination.Business.route) {
@@ -172,6 +207,7 @@ fun QlicNavHost(
                     selectedLanguage = selectedLanguage,
                     onLanguageSelected = onLanguageSelected,
                     onSupportClick = { navController.navigate(QlicDestination.Support.route) },
+                    onSharingClick = { navController.navigate(QlicDestination.Sharing.route) },
                     onAccountClick = { navController.navigate(QlicDestination.Account.route) },
                 )
             }
@@ -201,10 +237,26 @@ fun QlicNavHost(
                 )
             }
             composable(QlicDestination.Support.route) {
-                UnavailableScreen(
-                    R.string.support_unavailable_title,
-                    R.string.support_unavailable_body,
-                    "screen-support",
+                SupportScreen(
+                    state = supportState,
+                    devices = devicesState.devices,
+                    onRetry = { supportViewModel?.retry() },
+                    onDescriptionChanged = { supportViewModel?.onDescriptionChanged(it) },
+                    onDeviceSelected = { supportViewModel?.onDeviceSelected(it) },
+                    onSubmit = { supportViewModel?.submit() },
+                    modifier = Modifier.testTag("screen-support"),
+                )
+            }
+            composable(QlicDestination.Sharing.route) {
+                SharingScreen(
+                    state = sharingState,
+                    onRetry = { sharingViewModel?.retry() },
+                    onEmailChanged = { sharingViewModel?.onEmailChanged(it) },
+                    onPermissionChanged = { sharingViewModel?.onPermissionChanged(it) },
+                    onInvite = { sharingViewModel?.invite() },
+                    onAccept = { sharingViewModel?.accept(it) },
+                    onRevoke = { sharingViewModel?.revoke(it) },
+                    modifier = Modifier.testTag("screen-sharing"),
                 )
             }
             composable(QlicDestination.Account.route) {
@@ -291,6 +343,7 @@ private fun MoreScreen(
     selectedLanguage: AppLanguage,
     onLanguageSelected: (AppLanguage) -> Unit,
     onSupportClick: () -> Unit,
+    onSharingClick: () -> Unit,
     onAccountClick: () -> Unit,
 ) {
     Column(
@@ -302,6 +355,11 @@ private fun MoreScreen(
     ) {
         Text(stringResource(R.string.more_title), style = MaterialTheme.typography.headlineMedium)
         QlicButton(stringResource(R.string.nav_support), onSupportClick)
+        QlicButton(
+            stringResource(R.string.sharing_title),
+            onSharingClick,
+            modifier = Modifier.testTag("more-sharing"),
+        )
         QlicButton(
             stringResource(R.string.nav_account),
             onAccountClick,

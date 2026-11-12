@@ -19,7 +19,7 @@ class QlicDestinationTest {
             QlicDestination.business.map(QlicDestination::route),
         )
         assertEquals(
-            listOf("support", "account"),
+            listOf("support", "sharing", "account"),
             QlicDestination.more.map(QlicDestination::route),
         )
     }
